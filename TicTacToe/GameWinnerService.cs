@@ -3,11 +3,13 @@ using TicTacToe.Services;
 
 namespace TicTacToe
 {
-    internal class GameWinnerService : IGameWinnerService
+    public class GameWinnerService : IGameWinnerService
     {
         public char Validate(char[,] gameBoard)
         {
             char winnerCharacter = ' ';
+
+            bool gameBoardIsFull = true;
 
             //CHECKS ALL THE LINES IN THE CHAR ARRAY
             bool lineIsWinner;
@@ -16,13 +18,15 @@ namespace TicTacToe
                 lineIsWinner = true;
                 for (int c = 1; c <= 2; c++)
                 {
+
                     if (gameBoard[r, c] != gameBoard[r, c - 1])
                     {
                         lineIsWinner = false;
                     }
 
                 }
-                if(lineIsWinner == true)
+
+                if (lineIsWinner == true && gameBoard[r, 0] != ' ')
                 {
                     winnerCharacter = gameBoard[r, 0];
                 }
@@ -41,9 +45,9 @@ namespace TicTacToe
                     }
 
                 }
-                if (rowIsWinner == true)
+                if (rowIsWinner == true && gameBoard[0,c] != ' ')
                 {
-                    winnerCharacter = gameBoard[c, 0];
+                    winnerCharacter = gameBoard[0,c];
                 }
             }
 
@@ -60,31 +64,46 @@ namespace TicTacToe
             }
 
 
-            if (primDiagonal == true)
+            if (primDiagonal == true && gameBoard[0, 0] != ' ')
             {
                 winnerCharacter = gameBoard[0, 0];
             }
 
             //CHECK SECONDARY DIAGONALIS
-            bool secDiagonalWinner;
+            bool secDiagonalWinner = true;
 
+            
+
+            int d1 = 1;
             for (int d = 1; d <= 2; d++)
             {
-                secDiagonalWinner = true;
-                for (int d1 = 1; d1 >= 0; d1--)
+               
+                if (gameBoard[d, d1] != gameBoard[d - 1, d1 + 1])
                 {
-                    if(gameBoard[d,d1] != gameBoard[d-1,d1+1])
-                    {
-                        secDiagonalWinner = false;
-                    }
-
+                    secDiagonalWinner = false;
                 }
-                if(secDiagonalWinner == true)
+                d1--;
+            }
+
+            if (secDiagonalWinner == true && gameBoard[1, 1] != ' ')
+            {
+                winnerCharacter = gameBoard[1, 1];
+            }
+
+
+            /*Check if we are at the end of the game*/
+            foreach (char cell in gameBoard)
+            {
+                if(cell == ' ')
                 {
-                    winnerCharacter = gameBoard[0, 2];
+                    gameBoardIsFull = false;
                 }
             }
 
+            if(gameBoardIsFull == true && winnerCharacter == ' ')
+            {
+                winnerCharacter = 't';
+            }
 
             return winnerCharacter;
         }
