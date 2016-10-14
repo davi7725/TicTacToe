@@ -25,28 +25,27 @@ namespace TicTacToeUI
                                                  { ' ',' ',' '} };
 
             bool isFirstPlayer = true;
+            int x = 0;
+            int y = 0;
 
             while (validator.Validate(gameBoard) == ' ')
             {
-
                 printGame(gameBoard);
-
-
-                int x = getInput();
-                int y = getInput();
+                
+                x = getInput('x');
+                y = getInput('y');
 
                 while (isPositionOccupied(gameBoard, x, y) == true)
                 {
                     Console.Clear();
                     printGame(gameBoard);
                     Console.WriteLine("Bad input! Try again");
-                    x = getInput();
-                    y = getInput();
+                    x = getInput('x');
+                    y = getInput('y');
                 }
 
                 if (isFirstPlayer == true)
                 {
-
                     gameBoard[x, y] = 'x';
                     isFirstPlayer = false;
                 }
@@ -55,8 +54,8 @@ namespace TicTacToeUI
                     gameBoard[x, y] = 'o';
                     isFirstPlayer = true;
                 }
-                Console.Clear();
 
+                Console.Clear();
             }
             if (validator.Validate(gameBoard) == 't')
             {
@@ -79,9 +78,9 @@ namespace TicTacToeUI
 
 
 
-        private int getInput()
+        private int getInput(char askForThis)
         {
-            Console.WriteLine("In which position would you like to write?");
+            Console.WriteLine("What position would you like to put in the "+askForThis + " axis?");
             string input = Console.ReadLine();
 
             int returnedInput = Convert.ToInt32(input);
